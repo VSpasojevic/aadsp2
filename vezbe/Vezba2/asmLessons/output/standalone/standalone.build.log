@@ -1,0 +1,68 @@
+============= BUILDING STARTED ============
+  Project: asmLessons
+===========================================
+Assembling .a and .s files...
+   [delete] Deleting: C:\Users\student\Desktop\ra56-2015\vezbe\Vezba2\asmLessons\output\standalone\simpleTasks.O
+C:/Users/student/Desktop/ra56-2015/vezbe/Vezba2/asmLessons/simpleTasks.a
+C:/CirrusDSP/bin/casm C:/Users/student/Desktop/ra56-2015/vezbe/Vezba2/asmLessons/simpleTasks.a
+ --debug
+ -c
+ -s
+ -e
+ --cdl
+ -D_TOOLS_VERSION_=0x0701
+ -D_SLOT_=0
+ -D_OVLY_=standalone
+ -D_OVLY_REVISION_=020000
+ -D_VERSION_=00
+ -D_DSP_=a
+ -D_COMMON_INC_PATH_=C:/CirrusDSP/crystal32/common/inc/
+ -D_TARGET_FAMILY_=crystal32
+ -IC:/Users/student/Desktop/ra56-2015/vezbe/Vezba2/asmLessons/inc/
+ -IC:/CirrusDSP/include/
+ -lC:/Users/student/Desktop/ra56-2015/vezbe/Vezba2/asmLessons/output/standalone/simpleTasks.lst
+ -oC:/Users/student/Desktop/ra56-2015/vezbe/Vezba2/asmLessons/output/standalone/simpleTasks.O
+ -iC:/CirrusDSP/crystal32/common/inc/base.h
+ -D_LOCAL_SRC_PATH_=src/
+ -D_LOCAL_INC_PATH_=inc/
+ -D_ROUTER_INC_PATH_=rom_inc/
+Linking files...
+C:/CirrusDSP/bin/clink
+ -oC:/Users/student/Desktop/ra56-2015/vezbe/Vezba2/asmLessons/output/standalone/asmLessons.img
+ -fC:/CirrusDSP/crystal32/memory_maps/v00.mem.xml
+ --output_type=RAM
+ --overlay_type=standalone
+ -lC:/CirrusDSP/lib/
+ -lC:/CirrusDSP/lib/dsplib
+ -lC:/CirrusDSP/lib/dsplib/crystal32/
+C:/Users/student/Desktop/ra56-2015/vezbe/Vezba2/asmLessons/output/standalone/lesson01Introduction.O
+C:/Users/student/Desktop/ra56-2015/vezbe/Vezba2/asmLessons/output/standalone/lesson02SRSUnit.O
+C:/Users/student/Desktop/ra56-2015/vezbe/Vezba2/asmLessons/output/standalone/lesson03AGU.O
+C:/Users/student/Desktop/ra56-2015/vezbe/Vezba2/asmLessons/output/standalone/lesson04ProgramFlow.O
+C:/Users/student/Desktop/ra56-2015/vezbe/Vezba2/asmLessons/output/standalone/lesson05MemoryMoves.O
+C:/Users/student/Desktop/ra56-2015/vezbe/Vezba2/asmLessons/output/standalone/lesson06MACUnit.O
+C:/Users/student/Desktop/ra56-2015/vezbe/Vezba2/asmLessons/output/standalone/lesson07ALUUnit.O
+C:/Users/student/Desktop/ra56-2015/vezbe/Vezba2/asmLessons/output/standalone/main.O
+C:/Users/student/Desktop/ra56-2015/vezbe/Vezba2/asmLessons/output/standalone/simpleTasks.O
+Creating .uld file...
+C:/CirrusDSP/bin/lnkuld
+ -ja
+ C:/Users/student/Desktop/ra56-2015/vezbe/Vezba2/asmLessons/output/standalone/asmLessons.img
+ C:/Users/student/Desktop/ra56-2015/vezbe/Vezba2/asmLessons/output/standalone/asmLessons.uld
+     [exec] 
+     [exec] Reading file: C:/Users/student/Desktop/ra56-2015/vezbe/Vezba2/asmLessons/output/standalone/asmLessons.img ...
+     [exec] 	Processed 72 l
+     [exec] ine(s).
+     [exec] 
+     [exec] Writing output to file: C:/Users/student/Desktop/ra56-2015/vezbe/Vezba2/asmLessons/output/standalone/asmLessons.uld ...
+     [exec] 
+     [exec] Done!
+     [exec] 
+     [exec] Writing output to file: C:/Users/student/Desktop/ra56-2015/vezbe/Vezba2/asmLessons/output/standalone/asmLessons.uldb ...
+     [exec] 
+     [exec] Done!
+     [exec] 
+     [exec] Writing output to file: C:/Users/student/Desktop/ra56-2015/vezbe/Vezba2/asmLessons/output/standalone/asmLessons.uldc ...
+
+BUILD SUCCESSFUL
+Total time: 1 second

@@ -1,0 +1,319 @@
+1     						################################################################################
+2     						##*/**
+3     						##** @file simpleTasks.a
+4     						##**
+5     						##** Module: asmLessons
+6     						##** Description:  Simple exercise
+7     						##** $Source: $
+8     						##** $Revision: 1.0 $
+9     						##** $Date: <date> $
+10    						##** $Author: <student name> $
+11    						##**
+12    						##**/
+13    						################################################################################
+14    	 0000				_simpleTasks_a_
+15    						
+16    	 0000					.public X_S_simpleTask
+17    							
+18    							
+19    						
+20    						#---------------------------------------------------------------------------
+21    						# Allocate X_BX_Buffer1 in X memory (length is 128, need to be 
+22    						# aligned to buffer size). 
+23    							
+24    							# Your code here...	
+25    						
+26    							.xdata_ovly align (0x80)
+26     >> start of macro: .xdata_ovly align
+1+    									seg_align , "X_OVLY", X, (0x80)
+1+     >> start of macro: seg_align
+1+    						    SEGMENT "X_OVLY" ALIGN( (0x80) )
+2+    						  .if "" != ""
+3+    						___SegStart_X_
+4+    						  .endif
+5+    							#RememberSegmentType
+6+     >> end of macro: seg_align
+2+     >> end of macro: .xdata_ovly align
+27    	 0000				X_BX_Buffer1 .bss (0x80)
+28    						
+29    						#---------------------------------------------------------------------------	
+30    						
+31    						#---------------------------------------------------------------------------
+32    						# Allocate X_BY_Buffer2 in Y memory (length is 128). 
+33    							
+34    							# Your code here...	
+35    							
+36    							 .ydata_ovly
+36     >> start of macro: .ydata_ovly
+1+    									seg_single , "Y_OVLY", Y
+1+     >> start of macro: seg_single
+1+    						  .if ( "" != "" ) & defined( ___SegStart_Y_ )
+2+    						    segment
+3+    						  .else
+4+    						    segment "Y_OVLY"
+5+    							.if "" != ""
+6+    						___SegStart_Y_
+7+    							.endif
+8+    						  .endif
+9+    							#RememberSegmentType
+10+    >> end of macro: seg_single
+2+     >> end of macro: .ydata_ovly
+37    	 0000				X_BY_Buffer2 .bss (0x80)
+38    						
+39    						#---------------------------------------------------------------------------	
+40    						
+41    						
+42    						
+43    						simpleTasks_code    .code_ovly
+43     >> start of macro: .code_ovly
+1+    									seg_single simpleTasks_code, "CODE_OVLY", CODE
+1+     >> start of macro: seg_single
+1+    						  .if ( "simpleTasks_code" != "" ) & defined( ___SegStart_CODE_simpleTasks_code )
+2+    						simpleTasks_code    segment
+3+    						  .else
+4+    						simpleTasks_code    segment "CODE_OVLY"
+5+    							.if "simpleTasks_code" != ""
+6+    	 0000				___SegStart_CODE_simpleTasks_code
+7+    							.endif
+8+    						  .endif
+9+    							#RememberSegmentType
+10+    >> end of macro: seg_single
+2+     >> end of macro: .code_ovly
+44    						################################################################################
+45    						
+46    						################################################################################
+47    						##*/**
+48    						##** @Author	<student name>
+49    						##** @Date		<date>  
+50    						##**
+51    						##** Function:
+52    						##** X_S_init
+53    						##**
+54    						##** @param - none
+55    						##**
+56    						##** @return - nothing
+57    						##**
+58    						##** Trashes: a0, a1, a2, b0, x0, y0, y1, i0, i1, i4, i5
+59    						##** Comment: Initialize X_BX_Buffer1 and X_BY_Buffer2
+60    						##**
+61    						##** E-mail:	<email>
+62    						##**/
+63    						##*void X_S_init()
+64    						##*{
+65    						##*}
+66    						################################################################################
+67    	 0000				X_S_init 
+68    							
+69    						 # Set a0 to zero
+70    						 	//ufixed16(a0) = (0x800)
+71    	 0000	 00004DC0	 	a0 = 0
+72    						 # Load 1 to a1
+73    	 0001	 994A0001		uhalfword(a1h) = (1) 	//konstante se pisu u zagradama
+74    						 
+75    						 # Load X_BX_Buffer1 to i0
+76    	 0002	 B04A0000	 	i0 = (X_BX_Buffer1)
+77    							
+78    						 
+79    						 # In HW loop store a0 to xmem[i0], increment i0, and add a1 to a0
+80    	 0003	 88000004		do(0x80),>Loop
+81    	 0004	 58484408	%Loop: xmem[i0]= a0; i0+=1; a0 = a0 + a1
+82    						
+83    						 # Load X_BX_Buffer1 to i0
+84    	 0005	 B04A0000	 	i0 = (X_BX_Buffer1)
+85    						 
+86    						 
+87    						 # Set nm1 to 0x6003
+88    	 0006	 B44A6003		nm0 = (0x6003)
+89    						 
+90    						 # Load X_BY_Buffer2 to i4
+91    	 0007	 B84A0000		i4 = (X_BY_Buffer2)
+92    						
+93    						# In HW loop:
+94    						#    - load xmem[i0] to a0 and increment i0 with n
+95    						#    - store a0 to ymem[i4] and increment i4
+96    	 0008	 8800000A		do(0x80),>Loop
+97    	 0009	 88140030		a0 = xmem[i0]; i0+=n
+98    	 000A	 88D40014	%Loop: ymem[i4]= a0; i4+=1; 
+99    						
+100   						 # Set nm1 to 0
+101   	 000B	 B44A0000	 	nm0 = (0)
+102   						
+103   						
+104   	 000C				X_S_init_end:
+105   						#-------------------------------------------------------------------------------
+106   	 000C	 81880000	  ret
+107   						  
+108   						################################################################################
+109   						##*/**
+110   						##** @Author	<student name>
+111   						##** @Date		<date>  
+112   						##**
+113   						##** Function:
+114   						##** X_S_mean 
+115   						##**
+116   						##** @param - none
+117   						##**
+118   						##** @return - nothing
+119   						##**
+120   						##** Trashes: a0, a1, a2, b0, x0, y0, y1, i0, i1, i4, i5
+121   						##** Comment: Calculate mean values between elements of X_BX_Buffer1 and X_BY_Buffer2
+122   						##**
+123   						##** E-mail:	<email>
+124   						##**/
+125   						##*void X_S_mean ()
+126   						##*{
+127   						##*}
+128   						################################################################################
+129   	 000D				X_S_mean  
+130   						 
+131   						 # Load X_BX_Buffer1 to i0
+132   	 000D	 B04A0000		i0 = (X_BX_Buffer1)
+133   						 
+134   						 # Load X_BY_Buffer2 to i4
+135   	 000E	 B84A0000		i4 = (X_BY_Buffer2)
+136   						 
+137   						 # Set mr_sr to 0x1
+138   	 000F	 83AA0001	 	mr_sr =(0x1)
+139   						 
+140   						 # In HW loop:
+141   						 #    - load xmem[i0] to a0 
+142   						 #    - load ymem[i4] to b0 and increment i4 
+143   						 #    - Put sum of a0 and b0 to a0
+144   						 # 	  - store a0 to xmem[i0] and increment i0
+145   						 
+146   	 0010	 88000014		do(0x80),>Loop
+147   	 0011	 88140000		a0 = xmem[i0]
+148   	 0012	 8C940014		b0 = ymem[i4]; i4+=1
+149   	 0013	 00004420		a0 = a0 + b0	
+150   	 0014	 88540010	%Loop: xmem[i0]= a0; i0+=1	
+151   						
+152   						 # Set mr_sr to 0x0
+153   						 
+154   	 0015	 83AA0000	 	mr_sr = (0)
+155   	 0016				X_S_mean_end:
+156   						#-------------------------------------------------------------------------------
+157   	 0016	 81880000	  ret
+158   						
+159   						################################################################################
+160   						##*/**
+161   						##** @Author	<student name>
+162   						##** @Date		<date>  
+163   						##**
+164   						##** Function:
+165   						##** X_S_median 
+166   						##**
+167   						##** @param - i0 - input buffer address
+168   						##**		- i1 - buffer length
+169   						##**
+170   						##** @return - a0 - median value
+171   						##**
+172   						##** Trashes: a0, a1, a2, b0, x0, y0, y1, i0, i1, i4, i5
+173   						##** Comment: Simple tasks
+174   						##**
+175   						##** E-mail:	<email>
+176   						##**/
+177   						##*void X_S_median ()
+178   						##*{
+179   						##*}
+180   						################################################################################
+181   	 0017				X_S_median 
+182   							
+183   							# Your code here..
+184   						 
+185   	 0017				X_S_median_end:
+186   						#-------------------------------------------------------------------------------
+187   	 0017	 81880000	  ret
+188   						################################################################################
+189   						##*/**
+190   						##** @Author	Dejan Bokan
+191   						##** @Date		19.02.2016  
+192   						##**
+193   						##** Function:
+194   						##** X_S_simpleTask
+195   						##**
+196   						##** @param - none
+197   						##**
+198   						##** @return - nothing
+199   						##**
+200   						##** Trashes: a0, a1, a2, b0, x0, y0, y1, i0, i1, i4, i5
+201   						##** Comment: Simple tasks
+202   						##**
+203   						##** E-mail:	Dejan.Bokan@rt-rk.com
+204   						##**/
+205   						##*void X_S_simpleTask()
+206   						##*{
+207   						##*}
+208   						################################################################################
+209   	 0018				X_S_simpleTask
+210   							
+211   							#---------------------------------------------------------------------------
+212   	 0018	 80880000		 call X_S_init
+213   							
+214   							# Your code here..
+215   							
+216   							#---------------------------------------------------------------------------
+217   						
+218   							#---------------------------------------------------------------------------
+219   							# Call X_S_mean
+220   							
+221   							# Your code here..
+222   	 0019	 8088000D		call X_S_mean
+223   							
+224   							#---------------------------------------------------------------------------
+225   							
+226   							
+227   							#---------------------------------------------------------------------------
+228   							# Put X_BY_Buffer2 to i0
+229   							# Your code here..
+230   							
+231   							# Put 128 to i1
+232   							# Your code here..
+233   							
+234   							# Call X_S_mean
+235   							# Your code here..
+236   							
+237   							#---------------------------------------------------------------------------
+238   						
+239   	 001A				X_S_simpleTask_end:
+240   						#-------------------------------------------------------------------------------
+241   	 001A	 81880000	  ret
+242   						
+243   						
+244   						(null)
+				 SYMBOL TABLE 
+
+    Name                                                                                    Type                  Value 
+
+X_BX_Buffer1                                                                    			         Relocatable         simpleTasks_GEN_0000:0000H
+X_BY_Buffer2                                                                    			         Relocatable         simpleTasks_GEN_0001:0000H
+X_S_init                                                                        			         Relocatable         simpleTasks_code:0000H
+X_S_init_end                                                                    			  Unused Relocatable        simpleTasks_code:000CH
+X_S_mean                                                                        			         Relocatable         simpleTasks_code:000DH
+X_S_mean_end                                                                    			  Unused Relocatable        simpleTasks_code:0016H
+X_S_median                                                                      			  Unused Relocatable        simpleTasks_code:0017H
+X_S_median_end                                                                  			  Unused Relocatable        simpleTasks_code:0017H
+X_S_simpleTask                                                                  			  Public Relocatable       simpleTasks_code:0018H
+X_S_simpleTask_end                                                              			  Unused Relocatable        simpleTasks_code:001AH
+_COMMON_INC_PATH_                                                               					 Define                 "C:/CirrusDSP/crystal32/common/inc/"
+_DSP_                                                                           					 Define                 "a"
+_LOCAL_INC_PATH_                                                                					 Define                 "inc/"
+_LOCAL_SRC_PATH_                                                                					 Define                 "src/"
+_OVLY_                                                                          					 Define                 "standalone"
+_OVLY_REVISION_                                                                 					 Define                 "020000"
+_ROUTER_INC_PATH_                                                               					 Define                 "rom_inc/"
+_SLOT_                                                                          					 Define                 "0"
+_TARGET_FAMILY_                                                                 					 Define                 "crystal32"
+_TOOLS_VERSION_                                                                 					 Define                 "0x0701"
+_VERSION_                                                                       					 Define                 "00"
+__CASM_VER__                                                                    			  Unused Variable		        0 (701H)
+___SegStart_CODE_simpleTasks_code                                               			  Unused Relocatable        simpleTasks_code:0000H
+_simpleTasks_a_                                                                 			  Unused Relocatable        __INIT:0000H
+simpleTasks_code                                                                			  Unused Relocatable        simpleTasks_code:0000H
+
+	       SEGMENTS:
+
+Size			  Name										 Class
+0000H	 __INIT                                  			 CODE                                    
+0080H	 simpleTasks_GEN_0000                    			 X_OVLY                                  
+0080H	 simpleTasks_GEN_0001                    			 Y_OVLY                                  
+001BH	 simpleTasks_code                        			 CODE_OVLY                               
